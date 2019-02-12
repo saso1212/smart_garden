@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import  {Route,Switch} from 'react-router-dom';
 import HomePage from '../fetures/home/HomePage';
-import {Container} from 'semantic-ui-react';
+import NavBar from '../fetures/Nav/Navbar/Navbar';
+import ModalMenager from '../fetures/modals/ModalMenager'
+//import {Container} from 'semantic-ui-react';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
      <div> 
-       {/* <ModalMenager/> */}
+       <ModalMenager/>
        <Switch> 
          <Route exact path='/' component={HomePage}/> 
        </Switch>
        <Route path='/(.+)' render={()=>(
           <div>
-          {/* <NavBar/> */}
+          <NavBar/>
           {/* <Container className='main'>
          <Switch>
           <Route path='/events' component={EventDashboard}/>
