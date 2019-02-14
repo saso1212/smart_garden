@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import TextInput from '../../../common/form/TextInput';
 import {login,socialLogin} from '../authActions';
 import SocialLogin from '../SocialLogin/SocialLogin'
-//because we are using reduxForm we alredy have handleSubmit props bu default 
+//because we are using reduxForm we alredy have handleSubmit props by default 
 const LoginForm = ({login,handleSubmit,error,socialLogin}) => {
   return (
     <Form  size="large" onSubmit={handleSubmit(login)}>
@@ -20,7 +20,7 @@ const LoginForm = ({login,handleSubmit,error,socialLogin}) => {
           name="password"
           component={TextInput}
           type="password"
-          placeholder="password"
+          placeholder="Password"
         />
         {error && <Label basic color='red'>{error}</Label>}
         <Button fluid size="large" color="teal">

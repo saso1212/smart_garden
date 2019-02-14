@@ -64,6 +64,7 @@ export const registerUser = (user) =>
           type:'popup'
         })
         console.log(user);
+       //we gat from firebase fag if the user is new and we can use that
         if(user.additionalUserInfo.isNewUser){
           await firestore.set(`users/${user.user.uid}`,{
             displayName:user.profile.displayName,
