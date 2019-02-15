@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import {Segment,Form,Button,Grid,Header} from 'semantic-ui-react';
 import {reduxForm, Field} from 'redux-form';
-import {composeValidators,combineValidators,isRequired,hasLengthGreaterThan} from 'revalidate';
+// import {composeValidators,combineValidators,isRequired,hasLengthGreaterThan,isNumeric} from 'revalidate';
+import {combineValidators,isRequired,isNumeric} from 'revalidate';
 import Script from 'react-load-script';
 //import {geocodeByAddress,getLatLng,} from 'react-places-autocomplete';
 import {createEvent,updateEvent} from '../eventActions';
@@ -10,6 +11,7 @@ import TextInput from '../../../common/form/TextInput';
 import TextArea from '../../../common/form/TextArea';
 import SelectInput from '../../../common/form/SelectInput';
 import DateInput from '../../../common/form/DateInput';
+import CheckboxInput from '../../../common/form/CheckboxInput'
 //import PlaceInput from '../../../common/form/PlaceInput';
 import { cancelToggle} from '../eventActions'
 import {connect} from 'react-redux';
@@ -21,7 +23,8 @@ class EventForm extends Component {
   state={
     cityLatLng: {},
     venueLatLng: {},
-    scriptLoaded: false
+    scriptLoaded: false,
+    value:false
   }
 
 //   async componentDidMount(){
@@ -72,19 +75,43 @@ class EventForm extends Component {
           this.props.createEvent(values)};
           this.props.history.push('/events');
     }
+    handleChange = (e, { value }) => this.setState((prevState)=>{
+      return{value:!prevState.value}
+    })
    
    
     render() {
-      const category = [
-        {key: 'drinks', text: 'Drinks', value: 'drinks'},
-        {key: 'culture', text: 'Culture', value: 'culture'},
-        {key: 'film', text: 'Film', value: 'film'},
-        {key: 'food', text: 'Food', value: 'food'},
-        {key: 'music', text: 'Music', value: 'music'},
-        {key: 'travel', text: 'Travel', value: 'travel'},
-    ];
+
+      const  values=[
+        {key:'0',text:'',value:null},
+        {key:'1',text:'1', value:1},
+        {key:'2',text:'2', value:2},
+        {key:'3',text:'3', value:3},
+        {key:'4',text:'4', value:4},
+        {key:'5',text:'5', value:5},
+        {key:'6',text:'6', value:6},
+        {key:'7',text:'7', value:7},
+        {key:'8',text:'8', value:8},
+        {key:'9',text:'9', value:9},
+        {key:'10',text:'10', value:10},
+        {key:'11',text:'11', value:11},
+        {key:'12',text:'12', value:12},
+        {key:'13',text:'13', value:13},
+        {key:'14',text:'14', value:14},
+        {key:'15',text:'15', value:15},
+      ];
+     
+    //   const category = [
+    //     {key: 'drinks', text: 'Drinks', value: 'drinks'},
+    //     {key: 'culture', text: 'Culture', value: 'culture'},
+    //     {key: 'film', text: 'Film', value: 'film'},
+    //     {key: 'food', text: 'Food', value: 'food'},
+    //     {key: 'music', text: 'Music', value: 'music'},
+    //     {key: 'travel', text: 'Travel', value: 'travel'},
+    // ];
   
     const {invalid, submitting, pristine,event,cancelToggle} = this.props;
+    const {value}=this.state;
     //pristine is true after anything changes 
         return (
           <Grid>
@@ -97,29 +124,50 @@ class EventForm extends Component {
               {/* handleSubmit is redux form method */}
                 <Form onSubmit={this.props.handleSubmit(this.onFormSubmit)}>
                 <Header sub color='teal'  content='Event detailes'/>
-                  <Field name='title' type='text' component={TextInput} placeholder='Givr your event a name'/>
-                  <Field name='category' 
-                  type='text' 
-                  options={category}
-                  // multiple={true}
-                  component={SelectInput} 
-                  placeholder='What is your event abouth'/>
-                  <Field name='description' 
-                  rows={3}
-                  type='text'
-                   component={TextArea}
-                    placeholder='Tell as abouth your event'/>
-                  <Header sub color='teal'  content='Event Location Detailes'/>
-                
+                  {/* <Field name='title' type='text' component={TextInput} placeholder='Givr your event a name'/> */}
                   <Field 
-                    name="date"
+                    name="date1"
                     type="text"
                     component={DateInput}
                     dateFormat='YYYY-MM-DD HH:mm'
                     timeFormat='HH:mm'
                     showTimeSelect
-                    placeholder="Date and time of event"
+                    placeholder="Date and time of start the irigation "
                     />
+                    <Field 
+                    name="date2"
+                    type="text"
+                    component={DateInput}
+                    dateFormat='YYYY-MM-DD HH:mm'
+                    timeFormat='HH:mm'
+                    showTimeSelect
+                    placeholder="Date and time of end the irigation "
+                    />
+                    <Field name='quantity'
+                     type='text' component={TextInput} 
+                     placeholder='Enter the amaount of water in liters if you requierd'/>
+                    <Field  name='value' 
+                    value='true'
+                    onChange={this.handleChange}
+                     component={CheckboxInput}
+                    type='checkbox' label='Do you want to repeat the irrigation?'/>
+                  { value &&  (<Field name='days' 
+                      type='text' 
+                      options={values}
+                      // multiple={true}
+                      component={SelectInput} 
+                      placeholder='Please chose   days of repetition'/>)}
+                    { value && (<Field name='amount' 
+                      type='text' 
+                      options={values}
+                      // multiple={true}
+                      component={SelectInput} 
+                  placeholder='Please chose amount of repetitions'/>)}
+                    <Field name='description' 
+                    rows={3}
+                    type='text'
+                    component={TextArea}
+                    placeholder='Insert some note if you need'/> 
                     <Button disabled={invalid || pristine || submitting} positive type="submit">
                       Submit
                      </Button>
@@ -160,16 +208,20 @@ const mapDispatchToProps={
 }
 const validate = combineValidators({
   title: isRequired({message: 'The event title is required'}),
+  quantity:isNumeric({message:'The amount of value shoul be a number'}),
   category: isRequired({message: 'Please provide a category'}),
-  description: composeValidators(
-    isRequired({message: 'Please enter a description'}),
-    hasLengthGreaterThan(4)({message: 'Description needs to be at least 5 characters'})
-  )(),
-  city: isRequired('city'),
+  // description: composeValidators(
+  //   isRequired({message: 'Please enter a description'}),
+  //   hasLengthGreaterThan(4)({message: 'Description needs to be at least 5 characters'})
+  // )(),
+  // city: isRequired('city'),
   //will put default validation message
   venue: isRequired('venue'),
-  date: isRequired('date')
-});
+  days:isRequired('days'),
+  amount:isRequired('amount'),
+  date1: isRequired({message:'Please enter the start of irigation'}),
+  date2: isRequired({message:'Please enter the end of irigation'})
+}); 
 
 
 
