@@ -4,7 +4,7 @@ import {Segment,Form,Button,Grid,Header} from 'semantic-ui-react';
 import {reduxForm, Field} from 'redux-form';
 // import {composeValidators,combineValidators,isRequired,hasLengthGreaterThan,isNumeric} from 'revalidate';
 import {combineValidators,isRequired,isNumeric} from 'revalidate';
-import Script from 'react-load-script';
+//import Script from 'react-load-script';
 //import {geocodeByAddress,getLatLng,} from 'react-places-autocomplete';
 import {createEvent,updateEvent} from '../eventActions';
 import TextInput from '../../../common/form/TextInput';
@@ -15,6 +15,8 @@ import CheckboxInput from '../../../common/form/CheckboxInput'
 //import PlaceInput from '../../../common/form/PlaceInput';
 import { cancelToggle} from '../eventActions'
 import {connect} from 'react-redux';
+import moment from 'moment'
+import isBefore from 'date-fns/is_before'
 import { withFirestore } from 'react-redux-firebase';
 // import cuid from 'cuid';
 
@@ -24,7 +26,10 @@ class EventForm extends Component {
     cityLatLng: {},
     venueLatLng: {},
     scriptLoaded: false,
-    value:false
+    value:false,
+    changeDate1:false,
+    date1:null,
+    isValide:false
   }
 
 //   async componentDidMount(){
@@ -78,6 +83,13 @@ class EventForm extends Component {
     handleChange = (e, { value }) => this.setState((prevState)=>{
       return{value:!prevState.value}
     })
+    handleChangeDate1=(e,val)=>{
+      return this.setState({
+      changeDate1:true,date1:moment(val).toDate()}
+    )}
+    handleChageDate2=(e,val)=>{
+       return  this.setState({isValide:isBefore(this.state.date1,moment(val).toDate())});
+    }
    
    
     render() {
@@ -111,14 +123,11 @@ class EventForm extends Component {
     // ];
   
     const {invalid, submitting, pristine,event,cancelToggle} = this.props;
-    const {value}=this.state;
+    const {value,changeDate1}=this.state;
     //pristine is true after anything changes 
         return (
           <Grid>
-        <Script
-          url="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3SNo2WrB-RrvqrtYpCOyeGJhwx35hU-E&libraries=places"
-          onLoad={this.handleScriptLoaded}
-        />
+       
            <Grid.Column >
               <Segment style={{margin:"1.5em 0"}}>
               {/* handleSubmit is redux form method */}
@@ -133,15 +142,18 @@ class EventForm extends Component {
                     timeFormat='HH:mm'
                     showTimeSelect
                     placeholder="Date and time of start the irigation "
+                    onChange={this.handleChangeDate1}
                     />
                     <Field 
                     name="date2"
                     type="text"
+                    disabled={!changeDate1}
                     component={DateInput}
-                    dateFormat='YYYY-MM-DD HH:mm'
+                    // dateFormat='YYYY-MM-DD HH:mm'
                     timeFormat='HH:mm'
                     showTimeSelect
                     placeholder="Date and time of end the irigation "
+                    onChange={this.handleChageDate2}
                     />
                     <Field name='quantity'
                      type='text' component={TextInput} 
@@ -197,7 +209,8 @@ const mapStateToProp=(state)=>{
   }
   return{
       initialValues:event,
-      event:event 
+      event:event,
+      value:state.form.eventForm 
       //just  event
   }
 }
