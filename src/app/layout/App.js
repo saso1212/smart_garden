@@ -6,6 +6,7 @@ import ModalMenager from '../fetures/modals/ModalMenager'
 import {Container} from 'semantic-ui-react';
 //import EventForm from '../fetures/events/eventForm/EventForm'
 import CreateEventPage from '../fetures/events/eventEventPage/CreateEventPage'
+import TestArea from '../fetures/testArea/TestArea'
 import './App.css';
 //import CreateEventPage from '../fetures/events/eventEventPage/CreateEventPage';
 
@@ -28,9 +29,9 @@ class App extends Component {
           <Route path='/people' component={PeopleDashboard}/>
           <Route path='/profile/:id' component={UserDetailedPage}/>
           <Route path='/settings' component={SettingsDashboard}/>
-          <Route path='/createEvent' component={EventForm}/>
-          <Route path='/test' component={TestComponent}/> */}
-           <Route path='/createEvent' component={CreateEventPage}/>
+       <Route path='/createEvent' component={EventForm}/> */}
+          <Route path='/test' component={TestArea}/> 
+           <Route path='/createEvent/:id' component={CreateEventPage}/>
         </Switch>
        </Container>
         </div>

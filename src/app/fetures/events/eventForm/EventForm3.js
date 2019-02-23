@@ -21,7 +21,7 @@ import { withFirestore } from 'react-redux-firebase';
 // import cuid from 'cuid';
 
 
-class EventForm extends Component {
+class EventForm3 extends Component {
   state={
     cityLatLng: {},
     venueLatLng: {},
@@ -149,7 +149,7 @@ class EventForm extends Component {
                     type="text"
                     disabled={!changeDate1}
                     component={DateInput}
-                    // dateFormat='YYYY-MM-DD HH:mm'
+                     dateFormat='YYYY-MM-DD HH:mm'
                     timeFormat='HH:mm'
                     showTimeSelect
                     placeholder="Date and time of end the irigation "
@@ -238,4 +238,4 @@ const validate = combineValidators({
 
 
 
-export default withFirestore (connect(mapStateToProp,mapDispatchToProps)(reduxForm({form: 'eventForm',enableReinitialize:true,validate})(EventForm)));
+export default withFirestore (connect(mapStateToProp,mapDispatchToProps)(reduxForm({form: 'eventForm3',enableReinitialize:true,validate})(EventForm3)));

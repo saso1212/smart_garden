@@ -16,7 +16,7 @@ const DateInput = ({input: {value, onChange,onBlur, ...restInput}, width, placeh
         placeholderText={placeholder}
         selected={value ? moment(value) : null}
         onChange={onChange}
-        //we must use onBluse method because of the problem after seting the date it reset 
+        //we must use onBlure method because of the problem after seting the date it reset 
         //after the date change to 1970
         onBlur={()=>onBlur()}
         {...restInput}
