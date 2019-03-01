@@ -141,7 +141,7 @@ class EventForm2 extends Component {
                     dateFormat='YYYY-MM-DD HH:mm'
                     timeFormat='HH:mm'
                     showTimeSelect
-                    placeholder="Date and time of start the irigation "
+                    placeholder="Date and time of start the irigation on Valve 2"
                     onChange={this.handleChangeDate1}
                     />
                     <Field 
@@ -152,7 +152,7 @@ class EventForm2 extends Component {
                      dateFormat='YYYY-MM-DD HH:mm'
                     timeFormat='HH:mm'
                     showTimeSelect
-                    placeholder="Date and time of end the irigation "
+                    placeholder="Date and time of end the irigation on Valve 2 "
                     onChange={this.handleChageDate2}
                     />
                     <Field name='quantity'
@@ -162,7 +162,7 @@ class EventForm2 extends Component {
                     value='true'
                     onChange={this.handleChange}
                      component={CheckboxInput}
-                    type='checkbox' label='Do you want to repeat the irrigation?'/>
+                    type='checkbox' label='Do you want to repeat the irrigation with Valve 2?'/>
                   { value &&  (<Field name='days' 
                       type='text' 
                       options={values}

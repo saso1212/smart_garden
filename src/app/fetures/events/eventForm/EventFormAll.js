@@ -21,7 +21,7 @@ import { withFirestore } from 'react-redux-firebase';
 // import cuid from 'cuid';
 
 
-class EventForm1 extends Component {
+class EventFormAll extends Component {
   state={
     cityLatLng: {},
     venueLatLng: {},
@@ -141,7 +141,7 @@ class EventForm1 extends Component {
                     dateFormat='YYYY-MM-DD HH:mm'
                     timeFormat='HH:mm'
                     showTimeSelect
-                    placeholder="Date and time of start the irigation on Valve 1 "
+                    placeholder="Date and time of start the irigation with All Valves in the same time "
                     onChange={this.handleChangeDate1}
                     />
                     <Field 
@@ -152,17 +152,17 @@ class EventForm1 extends Component {
                      dateFormat='YYYY-MM-DD HH:mm'
                     timeFormat='HH:mm'
                     showTimeSelect
-                    placeholder="Date and time of end the irigation on Valve 1 "
+                    placeholder="Date and time of end the irigation with All Valves in the same time "
                     onChange={this.handleChageDate2}
                     />
                     <Field name='quantity'
                      type='text' component={TextInput} 
-                     placeholder='Enter the amaount of water  in liters if you requierd'/>
+                     placeholder='Enter the amaount of water in liters if you requierd with All Valves in the same time'/>
                     <Field  name='value' 
                     value='true'
                     onChange={this.handleChange}
                      component={CheckboxInput}
-                    type='checkbox' label='Do you want to repeat the irrigation with Valave 1 ?'/>
+                    type='checkbox' label='Do you want to repeat the irrigation with All Valves in the same time?'/>
                   { value &&  (<Field name='days' 
                       type='text' 
                       options={values}
@@ -179,7 +179,7 @@ class EventForm1 extends Component {
                     rows={3}
                     type='text'
                     component={TextArea}
-                    placeholder='Insert some note if you reqiued  '/> 
+                    placeholder='Insert some note if you need'/> 
                     <Button disabled={invalid || pristine || submitting} positive type="submit">
                       Submit
                      </Button>
@@ -238,4 +238,4 @@ const validate = combineValidators({
 
 
 
-export default withFirestore (connect(mapStateToProp,mapDispatchToProps)(reduxForm({form: 'eventForm1',enableReinitialize:true,validate})(EventForm1)));
+export default withFirestore (connect(mapStateToProp,mapDispatchToProps)(reduxForm({form: 'eventFormAll',enableReinitialize:true,validate})(EventFormAll)));
