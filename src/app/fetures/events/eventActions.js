@@ -9,9 +9,9 @@ export const createEvent = event => {
   return async (dispatch, getState, { getFirestore,getFirebase }) => {
     const firestore = getFirestore();
     // const firebase=getFirebase();
-    // in the new versinon of firebase there in no posebilitu to take user with firestore 
+    // in the new versinon of firebase there in no posebility to take user with firestore 
     const user = firestore.auth().currentUser;
-    const photoURL = getState().firebase.profile.photoURL;
+    const photoURL = getState().firebase.profile.photoURL || '/assets/user.png' ;
     let newEvent = createNewEvent(user, photoURL, event);
     try {
       let createdEvent = await firestore.add(`events`, newEvent);
@@ -69,21 +69,28 @@ export const cancelToggle = (cancelled, eventId) =>
   }
 };
 
-export const deleteEvent=(eventId)=>{
-    return{
-      type:actionTypes.DELETE_EVENT,
-      payload:{
-          eventId
-      }
-    }
- }
+export const activeIndex=(data)=>{
+  return{
+    type:actionTypes.CREATE_ACTIVEINDEX,
+    payload:data
+  }
+}
 
- export const fatchEvents=(events)=>{
-   return {
-     type:actionTypes.FATCH_EVENTS,
-     payload:events
-      }
- }
+// export const deleteEvent=(eventId)=>{
+//     return{
+//       type:actionTypes.DELETE_EVENT,
+//       payload:{
+//           eventId
+//       }
+//     }
+//  }
+
+//  export const fatchEvents=(events)=>{
+//    return {
+//      type:actionTypes.FATCH_EVENTS,
+//      payload:events
+//       }
+//  }
 
 
 

@@ -129,7 +129,7 @@ export const uploadProfileImage=(file,fileName)=>{
             dispatch(asyncActionStart());
             //upload file to firebase storage
             //path is the pathe where wi will upoad file,file is the file that we upload,
-            // null is beacuse we will use firestore not the real firebase database and handle thet file manualu,
+            // null is beacuse we will use firestore not the real firebase database and handle that file manualu,
             //options will be the name of the file
             let uploadFile= await firebase.uploadFile(path,file,null,options);
             console.log(uploadFile);
@@ -137,7 +137,7 @@ export const uploadProfileImage=(file,fileName)=>{
             let downloadURL =await uploadFile.uploadTaskSnapshot.downloadURL;
             //get userdoc
             //get document from firestore
-            //if we want to akses to deocument in firestore we must use data() method
+            //if we want to aces to document in firestore we must use data() method
             let userDoc= await firestore.get(`users/${user.uid}`)
              //check if the user has photo, if not update profile with the image
             if(!userDoc.data().photoURL){

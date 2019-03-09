@@ -138,6 +138,7 @@ class EventForm3 extends Component {
                     name="date1"
                     type="text"
                     component={DateInput}
+                    minDate={new Date()}
                     dateFormat='YYYY-MM-DD HH:mm'
                     timeFormat='HH:mm'
                     showTimeSelect
@@ -210,7 +211,7 @@ const mapStateToProp=(state)=>{
   return{
       initialValues:event,
       event:event,
-      value:state.form.eventForm 
+      value:state.form.eventForm3 
       //just  event
   }
 }

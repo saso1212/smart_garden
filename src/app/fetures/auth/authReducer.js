@@ -21,6 +21,8 @@ export const signOutUser=(state,payload)=>{
     }
 }
 
+
+
 export default createReducer(initialState,{
     [LOGIN_USER]:loginUser,
     [SIGN_OUT_USER]:signOutUser

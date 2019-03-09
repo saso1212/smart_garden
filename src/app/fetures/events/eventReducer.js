@@ -1,8 +1,10 @@
 import {createReducer} from '../../common/utility/reducerUtility';
-import {CREATE_EVENT,DELETE_EVENT,UPDATE_EVENT, FATCH_EVENTS} from './eventConstatnts';
+import {CREATE_EVENT,DELETE_EVENT,UPDATE_EVENT, FATCH_EVENTS,CREATE_ACTIVEINDEX} from './eventConstatnts';
 
 
- const initialState = [];
+ const initialState = {
+   activeIndex:0
+ };
 
       export const createEvent=(state,payload)=>{
             return [...state,{...payload.event}]
@@ -19,10 +21,17 @@ import {CREATE_EVENT,DELETE_EVENT,UPDATE_EVENT, FATCH_EVENTS} from './eventConst
       return payload.events
     }
 
+    export const activeIndex=(state,payload)=>{
+      return {
+        activeIndex:payload
+      }
+    }
+
       export default createReducer(initialState,{
           [CREATE_EVENT]:createEvent,
           [UPDATE_EVENT]:updateEvent,
           [DELETE_EVENT]:deleteEvent,
-          [FATCH_EVENTS]:fatchEvents
+          [FATCH_EVENTS]:fatchEvents,
+          [CREATE_ACTIVEINDEX]:activeIndex
        
       })

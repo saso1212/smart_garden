@@ -29,9 +29,8 @@ class TestArea extends Component {
       <Segment>
      <Form>
      <Field name='amount' 
-        type='text' 
-       options={values}
-                      // multiple={true}
+      type='text' 
+      options={values}
       component={SelectInput} 
       placeholder='Please chose duration of irigation'/>
     </Form>

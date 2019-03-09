@@ -60,7 +60,7 @@ class PhotosPage extends Component {
         }
     }   
 
-    handlePhotoDelete=  (photo)=>async ()=>{
+    handlePhotoDelete=(photo)=>async ()=>{
         try{
             this.props.deletePhoto(photo);
             toastr.success('Succes','Photo has been deleted');
