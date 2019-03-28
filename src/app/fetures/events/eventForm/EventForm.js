@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import {Segment,Form,Button,Grid,Header} from 'semantic-ui-react';
 import {reduxForm, Field} from 'redux-form';
+import { withRouter } from 'react-router'
 // import {composeValidators,combineValidators,isRequired,hasLengthGreaterThan,isNumeric} from 'revalidate';
 import {combineValidators,isRequired,isNumeric,composeValidators,createValidator} from 'revalidate';
 //import Script from 'react-load-script';
@@ -13,7 +14,8 @@ import SelectInput from '../../../common/form/SelectInput';
 import DateInput from '../../../common/form/DateInput';
 import CheckboxInput from '../../../common/form/CheckboxInput'
 //import PlaceInput from '../../../common/form/PlaceInput';
-import { cancelToggle} from '../eventActions'
+import {calculateDate} from '../../../common/utility/helpers'
+import { cancelToggle,activeIndex} from '../eventActions'
 import {connect} from 'react-redux';
 import moment from 'moment'
 import isAfter from 'date-fns/is_after'
@@ -60,8 +62,8 @@ class EventForm1 extends Component {
 
    
     onFormSubmit=values=>{
-      console.log(values);
-      console.log('initial values',this.props.initialValues.id);
+   
+    console.log(calculateDate(values.date,values.timeamount));
        if (this.props.initialValues.id){
       
           this.props.updateEvent(values);
@@ -70,7 +72,7 @@ class EventForm1 extends Component {
        }
         else
         {
-          this.props.createEvent(values)};
+          this.props.createEvent(values,this.props.activeIndex1)};
           this.props.history.push('/events');
     }
     handleChange = (e, { value }) => this.setState((prevState)=>{
@@ -114,7 +116,7 @@ class EventForm1 extends Component {
      
    
   
-    const {invalid, submitting, pristine,event,cancelToggle} = this.props;
+    const {invalid, submitting, pristine,event,cancelToggle,activeIndex1} = this.props;
     const {value}=this.state;
     //pristine is true after anything changes 
         return (
@@ -127,14 +129,14 @@ class EventForm1 extends Component {
                 <Header sub color='teal'  content='Event detailes'/>
                   {/* <Field name='title' type='text' component={TextInput} placeholder='Givr your event a name'/> */}
                   <Field 
-                    name="date1"
+                    name="date"
                     type="text"
                     minDate={new Date()}
                     component={DateInput}
                     dateFormat='YYYY-MM-DD HH:mm'
                     timeFormat='HH:mm'
                     showTimeSelect
-                    placeholder="Date and time of start the irigation on Valve 1 "
+                    placeholder={`Date and time of start the irigation on Valve ${activeIndex1 !==3 ? activeIndex1 + 1 : "All Valves"}`}
                     onChange={this.handleChangeDate1}
                     />
                     <Field name='timeamount' 
@@ -150,7 +152,7 @@ class EventForm1 extends Component {
                     value='true'
                     onChange={this.handleChange}
                     component={CheckboxInput}
-                    type='checkbox' label='Do you want to repeat the irrigation with Valave 1 ?'/>
+                    type='checkbox' label={`Do you want to repeat the irrigation with Valave ${activeIndex1 !==3 ? activeIndex1 + 1 : "All Valves"} ?`}/>
                   { value &&  (<Field name='days' 
                       type='text' 
                       options={values}
@@ -198,15 +200,16 @@ const mapStateToProp=(state)=>{
   return{
       initialValues:event,
       event:event,
-      value:state.form.eventForm1
-     
-      //just  event
+      value:state.form.eventForm,
+      activeIndex1:state.events.activeIndex
+    //just  event
   }
 }
 const mapDispatchToProps={
   createEvent,
   updateEvent,
-  cancelToggle
+  cancelToggle,
+  activeIndex
  
 }
 const isValidData = createValidator(
@@ -235,4 +238,4 @@ const validate = combineValidators({
 
 
 
-export default withFirestore (connect(mapStateToProp,mapDispatchToProps)(reduxForm({form: `eventForm1`,enableReinitialize:true,validate})(EventForm1)));
+export default withRouter(withFirestore (connect(mapStateToProp,mapDispatchToProps)(reduxForm({form: `eventForm`,enableReinitialize:true,validate})(EventForm1))));

@@ -16,3 +16,11 @@ export const createNewEvent = (user, photoURL, event) => {
     created: Date.now()
   }
 }
+export const calculateDate=(date, timeAmount)=>{
+  const dateToMills=date.toDate().getTime();
+  const timeSetup=timeAmount.split(":");
+  const hours=timeSetup[0] * 3600000;
+  const minutes=timeSetup[1] * 60000;
+  const newDate=dateToMills + hours + minutes;
+  return new Date(newDate);
+}

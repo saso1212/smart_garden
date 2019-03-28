@@ -2,29 +2,80 @@ import * as actionTypes from './eventConstatnts';
 //import {asyncActionStart,asyncActionFinish,asyncActionError} from '../async/asyncActions';
 import {toastr} from 'react-redux-toastr'
 import moment from 'moment'
-import { createNewEvent } from '../../common/utility/helpers'
+import { createNewEvent,calculateDate } from '../../common/utility/helpers'
 
 
-export const createEvent = event => {
+export const createEvent = (event,index) => {
+ 
   return async (dispatch, getState, { getFirestore,getFirebase }) => {
     const firestore = getFirestore();
     // const firebase=getFirebase();
     // in the new versinon of firebase there in no posebility to take user with firestore 
     const user = firestore.auth().currentUser;
     const photoURL = getState().firebase.profile.photoURL || '/assets/user.png' ;
-    let newEvent = createNewEvent(user, photoURL, event);
+    let dateEnd = calculateDate(event.date,event.timeamount);
+    // console.log("event date",dateEnd);
+    if(index !== 3){
+    let newEvent =await createNewEvent(user, photoURL, event);
+    console.log('newEvenet',newEvent);
+   let dateInMils=newEvent.date.getTime();
+   let dateEndInMils=dateEnd.getTime();
+   
+  
+    // const dateEnd = await calculateDate(event.date,event.timeamount);
+    // console.log(dateEnd);
+  //  console.log('event is',calculateDate(event.date,event.timeamount))
+    let additionalEvent={
+      ...newEvent,
+     eventEndAt:dateEnd,
+     eventStartAt:dateInMils,
+     eventEndInMils:dateEndInMils,
+     name:`valve_${index+1}`
+    }
     try {
-      let createdEvent = await firestore.add(`events`, newEvent);
+      let createdEvent = await firestore.add(`events`, additionalEvent);
       //we have alredy created id with add function so we can use it
       await firestore.set(`event_attendee/${createdEvent.id}_${user.uid}`, {
         eventId: createdEvent.id,
         userUid: user.uid,
         eventDate: event.date,
-        host: true
+        eventEndAt:dateEnd,
+        host: true,
+        name:`valve_${index+1}`
       });
       toastr.success('Success', 'Event has been created');
     } catch (error) {
       toastr.error('Oops', 'Something went wrong');
+    }}
+    else{
+      for (let i=0; i<index; i++){
+        let newEvent =await createNewEvent(user, photoURL, event);
+        console.log('newEvenet',newEvent);
+       let dateInMils=newEvent.date.getTime();
+       let dateEndInMils=dateEnd.getTime();
+       let additionalEvent={
+          ...newEvent,
+         eventEndAt:dateEnd,
+         eventStartAt:dateInMils,
+         eventEndInMils:dateEndInMils,
+         name:`valve_${i+1}`
+        }
+        try {
+          let createdEvent = await firestore.add(`events`, additionalEvent);
+          //we have alredy created id with add function so we can use it
+          await firestore.set(`event_attendee/${createdEvent.id}_${user.uid}`, {
+            eventId: createdEvent.id,
+            userUid: user.uid,
+            eventDate: event.date,
+            eventEndAt:dateEnd,
+            host: true,
+            name:`valve_${i+1}`
+          });
+          toastr.success('Success', 'Event has been created');
+        } catch (error) {
+          toastr.error('Oops', 'Something went wrong');
+        }
+      }
     }
   };
 };

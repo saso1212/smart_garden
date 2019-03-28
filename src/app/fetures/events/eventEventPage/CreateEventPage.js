@@ -1,32 +1,32 @@
 import React ,{Component} from 'react'
-import EventForm1 from '../eventForm/EventForm1';
+import EventForm from '../eventForm/EventForm';
 import {connect} from 'react-redux'
-import EventForm2 from '../eventForm/EventForm2';
-import EventForm3 from '../eventForm/EventForm3';
-import EventFormAll from '../eventForm/EventFormAll'
-
-
+import{activeIndex} from '../eventActions'
 import {Tab,Grid,Header,Segment} from 'semantic-ui-react'
 
 const panes = [
-    {menuItem: 'Valve 1', pane: {key: 'valve1'},render:()=><EventForm1/>},
-    {menuItem: 'Valve 2', pane: {key: 'valve2'},render:()=><EventForm2/>},
-    {menuItem: 'Valve 3', pane: {key: 'valve3'},render:()=><EventForm3/>},
-    {menuItem: 'All Valves', pane: {key: 'all_valves'},render:()=><EventFormAll/>}
+    {menuItem: 'Valve 1', pane: {key: 'valve1'},render:()=><EventForm/>},
+    {menuItem: 'Valve 2', pane: {key: 'valve2'},render:()=><EventForm/>},
+    {menuItem: 'Valve 3', pane: {key: 'valve3'},render:()=><EventForm/>},
+    {menuItem: 'All Valves', pane: {key: 'all_valves'},render:()=><EventForm/>}
    
   ]
 
 class  CreateEventPage extends Component  {
- 
+  changeTab =(e,data)=>{    
+  //  console.log(data.activeIndex);  
+   this.props.activeIndex(data.activeIndex);
+   
+  }
    
     render() {
-    
+       
   return (
      <Grid>
     <Grid.Column width={12}  >
         <Segment attached  > 
         <Header icon="calendar" content="Events" />
-        <Tab  panes={panes}   menu={{ pointing: true}}  />
+        <Tab  panes={panes} onTabChange={(e, data) => this.changeTab(e, data)}  menu={{ pointing: true}}  />
         <br/>
       
         </Segment>
@@ -41,4 +41,9 @@ const mapStateToProps=(state, ownProps)=>{
     activeIndex:state.events
   }
 }
-export default connect(mapStateToProps)(CreateEventPage);
+const actions ={
+  activeIndex
+  }
+export default connect(mapStateToProps,actions)(CreateEventPage);
+
+
